@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Nav,
   NavbarContainer,
@@ -8,14 +8,30 @@ import {
   NavMenu,
   NavItem,
   NavLinks,
+  NavItemBtn,
+  NavBtnLink,
 } from "./Navbar.elements";
+import { Button } from "../../globalStyles";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
+  const [button, setButton] = useState(true);
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
 
+  useEffect(() => {
+    showButton();
+  }, []);
+
+  window.addEventListener("resize", showButton);
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
@@ -38,6 +54,19 @@ const Navbar = () => {
               <NavItem>
                 <NavLinks to="/products">Products</NavLinks>
               </NavItem>
+              <NavItemBtn>
+                {button ? (
+                  <NavBtnLink to="/sign-up">
+                    <Button primary>SIGN UP</Button>
+                  </NavBtnLink>
+                ) : (
+                  <NavBtnLink to="/sign-up">
+                    <Button fontBig primary>
+                      SIGN UP
+                    </Button>
+                  </NavBtnLink>
+                )}
+              </NavItemBtn>
             </NavMenu>
           </NavbarContainer>
         </Nav>
